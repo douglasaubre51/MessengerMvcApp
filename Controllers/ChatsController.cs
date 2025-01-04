@@ -43,16 +43,17 @@ namespace MessengerMvcApp.Controllers
             }
             catch (Exception ex)
             {
-                return View("SqlError", ex.Message);
+                chatsViewModel.SqlErrorMessages = ex.Message;
+                return View("SqlError", chatsViewModel);
             }
 
             chatsViewModel.chatsModels = model;
             return View(chatsViewModel);
         }
 
-        public IActionResult SqlError(string message)
+        public IActionResult SqlError(ChatsViewModel chatsViewModel)
         {
-            return View(message);
+            return View(chatsViewModel);
         }
     }
 }
