@@ -8,5 +8,11 @@ namespace MessengerMvcApp.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Submit()
+        {
+            return RedirectToAction("ChatsView", "Chats");
+        }
     }
 }

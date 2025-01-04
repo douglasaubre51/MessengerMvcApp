@@ -1,5 +1,31 @@
-﻿@{
+﻿@model SignInModel
+
+@{
     ViewBag.Title = "Signing In";
 }
 
 <h1>Sign in now</h1>
+
+<form asp-action="SignInView" method="post">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" />
+    <span asp-validation-for="Name"></span>
+    <br />
+
+    <label asp-for="EmailID"></label>
+    <input asp-for="EmailID" />
+    <span asp-validation-for="EmailID"></span>
+    <br />
+
+    <label asp-for="Password"></label>
+    <input asp-for="Password" />
+    <span asp-validation-for="Password"></span>
+    <br />
+
+    <label asp-for="ConfirmPassword"></label>
+    <input asp-for="ConfirmPassword" />
+    <span asp-validation-for="ConfirmPassword"></span>
+    <br />
+
+    <button type="submit" >Sign In</button>
+</form>

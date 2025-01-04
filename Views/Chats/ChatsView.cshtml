@@ -1,0 +1,16 @@
+﻿@model MessengerMvcApp.ViewModels.ChatsViewModel
+
+@{
+    ViewBag.Title = "Chats";
+}
+
+<h1>Chat Now</h1>
+<br />
+
+@foreach(var m in Model.chatsModels)
+{
+    <h3>@m.Message</h3>
+    <h6>@m.Name</h6>
+    <h6>@m.Date</h6>
+    <br />
+}
