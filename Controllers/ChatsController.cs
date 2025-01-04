@@ -7,12 +7,13 @@ using System.Data;
 
 namespace MessengerMvcApp.Controllers
 {
-    public class ChatsController : Controller, IGetDBData
+    public class ChatsController : Controller
     {
-        private readonly IConfiguration _configuration;
-        private readonly IGetDBData _getDBData;
 
-        public ChatsController(IConfiguration configuration, IGetDBData getDBData)
+        private readonly IConfiguration _configuration;
+        private readonly GetDBData _getDBData;
+
+        public ChatsController(IConfiguration configuration, GetDBData getDBData)
         {
             _configuration = configuration;
             _getDBData = getDBData;

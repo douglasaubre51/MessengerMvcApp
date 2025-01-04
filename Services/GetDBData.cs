@@ -3,13 +3,13 @@ using System.Data;
 
 namespace MessengerMvcApp.Services
 {
-    public interface IGetDBData
+    public class GetDBData
     {
         public DataTable SelectData(string query, IConfiguration configuration)
         {
             string? connectionString = configuration.GetConnectionString("MessengerDataString");
             DataSet dataSet = new DataSet();
-            DataTable dataTable = new DataTable();
+            DataTable? dataTable = new DataTable();
 
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
