@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MessengerMvcApp.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MessengerMvcApp.Controllers
 {
@@ -10,9 +11,16 @@ namespace MessengerMvcApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Submit()
+        public IActionResult Submit(SignInModel model)
         {
-            return RedirectToAction("ChatsView", "Chats");
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("ChatsView", "Chats");
+            }
+            else
+            {
+                return View("SignInView", model);
+            }
         }
     }
 }
