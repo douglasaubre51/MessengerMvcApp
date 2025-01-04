@@ -1,5 +1,3 @@
-using MessengerMvcApp.Services;
-
 namespace MessengerMvcApp
 {
     public class Program
@@ -10,8 +8,6 @@ namespace MessengerMvcApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
-            builder.Services.AddScoped<IGetDBData>();
 
             var app = builder.Build();
 
