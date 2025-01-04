@@ -11,23 +11,22 @@ namespace MessengerMvcApp.Controllers
     {
 
         private readonly IConfiguration _configuration;
-        private readonly GetDBData _getDBData;
 
-        public ChatsController(IConfiguration configuration, GetDBData getDBData)
+        public ChatsController(IConfiguration configuration)
         {
             _configuration = configuration;
-            _getDBData = getDBData;
         }
 
         public IActionResult ChatsView(ChatsViewModel chatsViewModel)
         {
+            GetDBData getDBData = new GetDBData();
             var model = new List<ChatsModel>();
             DataTable dataTable = new DataTable();
             string query = "select UserName,EmailID,Conversation,Date from UserDetails";
 
             try
             {
-                dataTable = _getDBData.SelectData(query, _configuration);
+                dataTable = getDBData.SelectData(query, _configuration);
 
                 foreach (DataRow row in dataTable.Rows)
                 {
