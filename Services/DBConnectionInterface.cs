@@ -13,10 +13,11 @@ namespace MessengerMvcApp.Services
 
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
-                string query = "select UserName,EmailID,Conversation from UserDetails";
+                string querys = "select UserName,EmailID,Conversation from UserDetails";
 
-                using (SqlCommand sqlCommand = new SqlCommand())
+                using (SqlCommand sqlCommand = new SqlCommand(querys, sqlConnection))
                 {
+
                 }
 
                 return chats;
