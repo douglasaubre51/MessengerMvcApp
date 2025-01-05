@@ -22,26 +22,74 @@ namespace MessengerMvcApp.Controllers
         [HttpPost]
         public IActionResult Submit(SignInModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                GetDBData getDBData = new GetDBData();
-                DataTable dataTable = new DataTable();
+                model = new SignInModel();
 
-                string query = "select EmailID,Password from UserDetails where EmailID=@emailId";
-                
-                dataTable = getDBData.SelectData(query, _configuration);
+                if (ModelState.IsValid)
+                {
+                    bool isEmail = false;
+                    bool isPassword = false;
 
-                if (dataTable.Rows.Count == 0)
+                    GetDBData getDBData = new GetDBData();
+                    DataTable dataTable = new DataTable();
+
+                    string query = $"select * from UserDetails";
+
+                    dataTable = getDBData.SelectData(query, _configuration);
+
+                    var verifyEmailQuery = from row in dataTable.AsEnumerable()
+                                           where row.Field<string>("EmailID") == model.EmailID
+                                           select row;
+
+                    foreach (var row in verifyEmailQuery)
+                    {
+                        if (row == null)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            isEmail = true;
+                            break;
+                        }
+                    }
+
+                    var verifyPasswordQuery = from row in dataTable.AsEnumerable()
+                                              where row.Field<string>("Password") == model.Password
+                                              select row;
+
+                    foreach (var row in verifyPasswordQuery)
+                    {
+                        if (row == null)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            isPassword = true;
+                            break;
+                        }
+                    }
+
+                    model.isEmail = isEmail;
+                    model.isPassword = isPassword;
+
+                    if (isEmail && isPassword)
+                    {
+                        return RedirectToAction("ChatsView", "Chats");
+                    }
+
+                    return View("SignInView", model);
+                }
+                else
                 {
                     return View("SignInView", model);
                 }
-
-
-
-                return RedirectToAction("ChatsView", "Chats");
             }
-            else
+            catch (Exception ex)
             {
+                model.SqlErrorMessages = ex.Message + ex.Source + "stack trace: " + ex.StackTrace;
                 return View("SignInView", model);
             }
         }

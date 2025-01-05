@@ -29,3 +29,14 @@
 
     <button type="submit" >Sign In</button>
 </form>
+
+<span>@Model.SqlErrorMessages</span>
+
+@if (Model.isEmail == false)
+{
+    <span>email doesnot exist!</span>
+}
+@if (Model.isPassword == false)
+{
+    <span>wrong password!</span>
+}

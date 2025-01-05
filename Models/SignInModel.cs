@@ -19,5 +19,9 @@ namespace MessengerMvcApp.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "passwords do not match!")]
         public string? ConfirmPassword { get; set; }
+
+        public string? SqlErrorMessages { get; set; }
+        public bool isEmail { get; set; } = true;
+        public bool isPassword { get; set; } = true;
     }
 }
