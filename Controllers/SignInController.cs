@@ -14,17 +14,18 @@ namespace MessengerMvcApp.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult SignInView()
+        public IActionResult SignInView(SignInModel model)
         {
-            return View();
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Submit(SignInModel model)
         {
+            model = new SignInModel();
+
             try
             {
-                model = new SignInModel();
 
                 if (ModelState.IsValid)
                 {
@@ -38,19 +39,21 @@ namespace MessengerMvcApp.Controllers
 
                     dataTable = getDBData.SelectData(query, _configuration);
 
+                    EmailAndPasswordClass emailAndPassword = new();
+
                     var verifyEmailQuery = from row in dataTable.AsEnumerable()
                                            where row.Field<string>("EmailID") == model.EmailID
                                            select row;
 
                     foreach (var row in verifyEmailQuery)
                     {
-                        if (row == null)
+                        if (!string.IsNullOrEmpty(row.Field<string>("EmailID")))
                         {
+                            isEmail = true;
                             break;
                         }
                         else
                         {
-                            isEmail = true;
                             break;
                         }
                     }
@@ -61,13 +64,13 @@ namespace MessengerMvcApp.Controllers
 
                     foreach (var row in verifyPasswordQuery)
                     {
-                        if (row == null)
+                        if (!string.IsNullOrEmpty(row.Field<string>("Password")))
                         {
+                            isPassword = true;
                             break;
                         }
                         else
                         {
-                            isPassword = true;
                             break;
                         }
                     }
