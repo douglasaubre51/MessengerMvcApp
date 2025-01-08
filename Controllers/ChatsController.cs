@@ -4,12 +4,10 @@ using MessengerMvcApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
-
 namespace MessengerMvcApp.Controllers
 {
     public class ChatsController : Controller
     {
-
         private readonly IConfiguration _configuration;
 
         public ChatsController(IConfiguration configuration)
@@ -20,8 +18,11 @@ namespace MessengerMvcApp.Controllers
         public IActionResult ChatsView(ChatsViewModel chatsViewModel)
         {
             GetDBData getDBData = new GetDBData();
-            var model = new List<ChatsModel>();
+
+            var model = new List<Chats>();
+
             DataTable dataTable = new DataTable();
+
             string query = "select UserName,EmailID,Conversation,Date from UserDetails";
 
             try
@@ -31,7 +32,7 @@ namespace MessengerMvcApp.Controllers
                 foreach (DataRow row in dataTable.Rows)
                 {
                     model.Add(
-                        new ChatsModel
+                        new Chats
                         {
                             Name = (string)row["UserName"],
                             Email = (string)row["EmailID"],
@@ -39,7 +40,6 @@ namespace MessengerMvcApp.Controllers
                             Message = (string)row["Conversation"]
                         });
                 }
-
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace MessengerMvcApp.Controllers
                 return View("SqlError", chatsViewModel);
             }
 
-            chatsViewModel.chatsModels = model;
+            chatsViewModel.chats = model;
             return View(chatsViewModel);
         }
 

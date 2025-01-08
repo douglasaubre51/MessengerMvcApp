@@ -2,7 +2,7 @@
 
 namespace MessengerMvcApp.Models
 {
-    public class SignInModel
+    public class CreateAccount
     {
         [Required(ErrorMessage = "name is required!")]
         public string? Name { get; set; }
@@ -19,9 +19,6 @@ namespace MessengerMvcApp.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "passwords do not match!")]
         public string? ConfirmPassword { get; set; }
-
         public string? SqlErrorMessages { get; set; }
-        public bool isEmail { get; set; } = true;
-        public bool isPassword { get; set; } = true;
     }
 }

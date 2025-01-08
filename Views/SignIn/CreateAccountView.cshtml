@@ -1,0 +1,32 @@
+﻿@model MessengerMvcApp.ViewModels.CreateSignInViewModel
+
+@{
+    ViewBag.Title = "Signing In";
+}
+
+<h1>Sign in now</h1>
+
+<form asp-action="Submit" method="post">
+
+    <label asp-for="@Model.createAccount.Name"></label>
+    <input asp-for="@Model.createAccount.Name" />
+    <span asp-validation-for="@Model.createAccount.Name"></span>
+    <br />
+
+    <label asp-for="@Model.createAccount.EmailID"></label>
+    <input asp-for="@Model.createAccount.EmailID" />
+    <span asp-validation-for="@Model.createAccount.EmailID"></span>
+    <br />
+
+    <label asp-for="@Model.createAccount.Password"></label>
+    <input asp-for="@Model.createAccount.Password" />
+    <span asp-validation-for="@Model.createAccount.Password"></span>
+    <br />
+
+    <label asp-for="@Model.createAccount.ConfirmPassword"></label>
+    <input asp-for="@Model.createAccount.ConfirmPassword" />
+    <span asp-validation-for="@Model.createAccount.ConfirmPassword"></span>
+    <br />
+
+    <button type="submit">Sign In</button>
+</form>

@@ -1,5 +1,6 @@
 ﻿using MessengerMvcApp.Models;
 using MessengerMvcApp.Services;
+using MessengerMvcApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -14,21 +15,21 @@ namespace MessengerMvcApp.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult SignInView(SignInModel model)
+        public IActionResult CreateAccountView(CreateSignInViewModel createSignInVM)
         {
-            return View(model);
+            return View(createSignInVM);
         }
 
         [HttpPost]
-        public IActionResult Submit(SignInModel model)
+        public IActionResult Submit(CreateSignInViewModel createSignInVM)
         {
-            model = new SignInModel();
-
             try
             {
-
                 if (ModelState.IsValid)
                 {
+                    var createAccountmodel = new CreateAccount();
+                    createAccountmodel = createSignInVM.createAccount;
+
                     bool isEmail = false;
                     bool isPassword = false;
 
@@ -39,61 +40,27 @@ namespace MessengerMvcApp.Controllers
 
                     dataTable = getDBData.SelectData(query, _configuration);
 
-                    EmailAndPasswordClass emailAndPassword = new();
+                    var verifyEmailQuery = dataTable.AsEnumerable().Where(x => x.Field<string>("EmailID") == createAccountmodel.EmailID ? isEmail = true : isEmail = false);
 
-                    var verifyEmailQuery = from row in dataTable.AsEnumerable()
-                                           where row.Field<string>("EmailID") == model.EmailID
-                                           select row;
-
-                    foreach (var row in verifyEmailQuery)
-                    {
-                        if (!string.IsNullOrEmpty(row.Field<string>("EmailID")))
-                        {
-                            isEmail = true;
-                            break;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    var verifyPasswordQuery = from row in dataTable.AsEnumerable()
-                                              where row.Field<string>("Password") == model.Password
-                                              select row;
-
-                    foreach (var row in verifyPasswordQuery)
-                    {
-                        if (!string.IsNullOrEmpty(row.Field<string>("Password")))
-                        {
-                            isPassword = true;
-                            break;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    model.isEmail = isEmail;
-                    model.isPassword = isPassword;
+                    var verifyPasswordQuery = dataTable.AsEnumerable().Where(x =>
+                    x.Field<string>("Password") == createAccountmodel.Password ? isPassword = true : isPassword = false);
 
                     if (isEmail && isPassword)
                     {
                         return RedirectToAction("ChatsView", "Chats");
                     }
 
-                    return View("SignInView", model);
+                    return View("CreateAccountView", createSignInVM);
                 }
                 else
                 {
-                    return View("SignInView", model);
+                    return View("CreateAccountView", createSignInVM);
                 }
             }
             catch (Exception ex)
             {
-                model.SqlErrorMessages = ex.Message + ex.Source + "stack trace: " + ex.StackTrace;
-                return View("SignInView", model);
+                createSignInVM.createAccount.SqlErrorMessages = ex.Message + ex.Source + "stack trace: " + ex.StackTrace;
+                return View("SignInView", createSignInVM);
             }
         }
     }
