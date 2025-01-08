@@ -4,7 +4,7 @@ namespace MessengerMvcApp.ViewModels
 {
     public class ChatsViewModel
     {
-        public List<Chats> chats = new List<Chats>();
+        public List<Chats> chats = new();
         public string? SqlErrorMessages { get; set; }
     }
 }

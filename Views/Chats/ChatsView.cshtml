@@ -7,10 +7,10 @@
 <h1>Chat Now</h1>
 <br />
 
-@foreach (var m in Model.chats)
+@foreach (MessengerMvcApp.Models.Chats x in Model.chats)
 {
-    <h3>@m.Message</h3>
-    <h6>@m.Name</h6>
-    <h6>@m.Date</h6>
+    <h3>@x.Message</h3>
+    <h6>@x.Name</h6>
+    <h6>@x.Date</h6>
     <br />
 }
