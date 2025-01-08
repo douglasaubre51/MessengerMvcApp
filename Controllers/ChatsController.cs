@@ -15,15 +15,14 @@ namespace MessengerMvcApp.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult ChatsView(ChatsViewModel chatsViewModel)
+        public IActionResult ChatsView()
         {
-            GetDBData getDBData = new GetDBData();
-
+            ChatsViewModel chatsViewModel = new ChatsViewModel();
             var model = new List<Chats>();
+            GetDBData getDBData = new GetDBData();
+            DataTable dataTable;
 
-            DataTable dataTable = new DataTable();
-
-            string query = "select UserName,EmailID,Conversation,Date from UserDetails";
+            string query = "select * from UserDetails";
 
             try
             {
@@ -31,23 +30,28 @@ namespace MessengerMvcApp.Controllers
 
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    model.Add(
-                        new Chats
-                        {
-                            Name = (string)row["UserName"],
-                            Email = (string)row["EmailID"],
-                            Date = (DateTime?)row["Date"],
-                            Message = (string)row["Conversation"]
-                        });
+                    foreach (DataColumn column in dataTable.Columns)
+                    {
+                        model.Add(
+                            new Chats
+                            {
+                                Name = (string)row["UserName"],
+                                Email = (string)row["EmailID"],
+                                Date = (DateTime)row["Date"],
+                                Message = (string)row["Conversation"]
+                            });
+
+                    }
                 }
+
+                chatsViewModel.chats = model;
             }
             catch (Exception ex)
             {
-                chatsViewModel.SqlErrorMessages = ex.Message;
+                chatsViewModel.SqlErrorMessages = ex.Message + ex.StackTrace;
                 return View("SqlError", chatsViewModel);
             }
 
-            chatsViewModel.chats = model;
             return View(chatsViewModel);
         }
 

@@ -4,7 +4,7 @@ namespace MessengerMvcApp.ViewModels
 {
     public class CreateSignInViewModel
     {
-        public CreateAccount createAccount;
-        public UserCredentials userCredentials;
+        public CreateAccount createAccount = new CreateAccount();
+        public UserCredentials userCredentials = new UserCredentials();
     }
 }

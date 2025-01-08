@@ -7,9 +7,9 @@ namespace MessengerMvcApp.Services
     {
         public DataTable SelectData(string query, IConfiguration configuration)
         {
-            string? connectionString = configuration.GetConnectionString("MessengerDataString");
+            string connectionString = configuration.GetConnectionString("MessengerDataString");
             DataSet dataSet = new DataSet();
-            DataTable? dataTable = new DataTable();
+            DataTable dataTable = new DataTable();
 
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {

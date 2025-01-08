@@ -27,26 +27,29 @@ namespace MessengerMvcApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    bool emailExists = true;
-                    bool passwordExists = true;
+                    bool emailExists;
+                    bool passwordExists;
 
                     GetDBData getDBData = new GetDBData();
-                    DataTable dataTable = new DataTable();
+                    DataTable dataTable;
 
                     string query = $"select * from UserDetails";
 
                     dataTable = getDBData.SelectData(query, _configuration);
 
-                    var verifyEmailQuery = dataTable.AsEnumerable().FirstOrDefault(x => x.Field<string>("EmailID") == loginViewModel.loginModel.EmailID);
+                    var verifyEmailQuery = dataTable.AsEnumerable().Where(x => x.Field<string>("EmailID") == loginViewModel.loginModel.EmailID);
 
                     emailExists = verifyEmailQuery != null ? true : false;
 
-                    var verifyPasswordQuery = dataTable.AsEnumerable().FirstOrDefault(x =>
+                    var verifyPasswordQuery = dataTable.AsEnumerable().Where(x =>
                     x.Field<string>("Password") == loginViewModel.loginModel.Password);
 
                     passwordExists = verifyPasswordQuery != null ? true : false;
 
-                    if (emailExists && passwordExists)
+                    loginViewModel.emailExists = emailExists;
+                    loginViewModel.passwordExists = passwordExists;
+
+                    if (loginViewModel.emailExists & loginViewModel.passwordExists == true)
                     {
                         return RedirectToAction("ChatsView", "Chats");
                     }
